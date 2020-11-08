@@ -1,6 +1,8 @@
 ## Personal Blog
 ## Articles and Slides
 ### 2020
+[Erlang message passing brief introduction @ China Elixir meetup](./slides/erlang-message-passing.key) 2020-10-24
+
 [Concurrency task schedule brief introduction @ RubyConf China 2020](./slides/Concurrency-task-schedule-brief-introduction@RubyConf-China-2020.key) 2020-08-15
 
 [Raft 笔记](https://ruby-china.org/topics/40018)  2020-06-26
