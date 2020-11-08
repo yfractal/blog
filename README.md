@@ -1,6 +1,8 @@
 ## Personal Blog
 ## Articles and Slides
 ### 2020
+[Raft 笔记](https://ruby-china.org/topics/40018)  2020-06-26
+
 [Awesome OTP Learning](https://github.com/yfractal/awesome-otp-learning) 2020-02-22
 
 [Linear Hash 原理及实现](https://ruby-china.org/topics/39466) 2020-01-27
