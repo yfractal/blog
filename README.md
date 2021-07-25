@@ -2,6 +2,7 @@
 ## Articles and Slides
 ### 2021
 [Meltdown Notes](./blog/2021-07-25-meltdown.md) 2021-07-25
+[MIT 6.S081 学习总结](https://ruby-china.org/topics/41485) 2021-07-17
 
 ### 2020
 [Erlang message passing brief introduction @ Beijing Elixir meetup](./slides/erlang-message-passing.key) 2020-10-24
