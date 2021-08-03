@@ -1,5 +1,3 @@
-原文链接 https://github.com/yfractal/blog/blob/master/blog/2021-07-29-user-level-thread-switch.md
-
 # User Level Thread Switch
 
 This article will introduce how CPU handle function call and how to do user level thread switch.
