@@ -1,6 +1,8 @@
+原文链接 https://github.com/yfractal/blog/blob/master/blog/2021-07-29-user-level-thread-switch.md
+
 # User Level Thread Switch
 
-This article will introduce how CPU handle function call and how to handle user level threead switch.
+This article will introduce how CPU handle function call and how to do user level thread switch.
 
 ## Function Call
 Let's image a simple computer, all instructions are stored in memory, and CPU will execute the instruction on by one in sequence.
@@ -13,7 +15,7 @@ The registers are much more faster than memory, accessing a register may need on
 
 But CPU just has limited registers, may 32 or 64 or more, but can't get as much as we want.
 
-The register for storing next instruction's addrress is `PC`.
+The register for storing next instruction's address is `PC`.
 
 After we executed one instruction, we move the `PC` 4 byte forward (suppose 32 bits for each instruction).
 
@@ -138,7 +140,7 @@ After a function has been called, we pop the value and move the pointer backward
 
 As this happens so often, hardware designer provides one register for us, it is called `sp` usually.
 
-Register `ra`'s value only has meaning in current function, when we executed a inner function such as `bar`, the `ra` should have different value. 
+Register `ra`'s value only has meaning in current function, when we executed an inner function such as `bar`, the `ra` should have different value. 
 
 It is a temporary register, such registers should be saved by caller.
 
@@ -156,9 +158,9 @@ NOTICE: Those are based on MIT 6.S081 2020 Multithreading lab.
 
 We need build a function for switching two thread. 
 
-And the funnction will be called likes `switch(thread1, thread2)`, thread1 is a variable which stores thread 1's state.
+And the function will be called likes `switch(thread1, thread2)`, thread1 is a variable which stores thread 1's state.
 
-When call a `switch` function we will switch thread1 to thread2.
+When call `switch` function we will switch from `thread1` to `thread2`.
 
 ![Screen Shot 2021-07-28 at 9 54 12 PM](https://user-images.githubusercontent.com/3775525/127334554-fa2caa8f-dc62-41f0-a6ae-17078391a623.png)
 
@@ -256,7 +258,7 @@ switch:
 
 When we create a user level thread, we need set the stack's address for the thread's `context.sp` field and set `context.ra` to the function we want to execute.
 
-So when we swith to the thread, CPU will jump to the `thread->context.ra` and use `thread->context.sp` as its stack.
+So when we switch to the thread, CPU will jump to the `thread->context.ra` and use `thread->context.sp` as its stack.
 
 The memory layout as below:
 
