@@ -12,6 +12,8 @@
 
 [MIT 6.S081 学习总结](https://ruby-china.org/topics/41485) 2021-07-17
 
+[Linear Hash Revisit](https://ruby-china.org/topics/40930) 2021-02-22
+
 ### 2020
 [Erlang message passing brief introduction @ Beijing Elixir meetup](./slides/erlang-message-passing.key) 2020-10-24
 
