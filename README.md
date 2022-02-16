@@ -16,6 +16,8 @@
 
 [Linear Hash Revisit](https://ruby-china.org/topics/40930) 2021-02-22
 
+[How DBMS Memory Buffer Works](https://ruby-china.org/topics/40932) 2021-02-21
+
 ### 2020
 [Erlang message passing brief introduction @ Beijing Elixir meetup](./slides/erlang-message-passing.key) 2020-10-24
 
