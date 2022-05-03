@@ -1,6 +1,8 @@
 ## Personal Blog
 ## Articles and Slides
 ## 2022
+[Slack’s Incident on 2-22-22 Reading Note](./blog/2022-05-03-slack-incident-reading-note.md) 2022-05-03
+
 [How Copy on Write Works in Xv6](./slides/cow-in-xv6.key) 2022-02-06
 
 [TCP Congestion Control Brief Description by Pseudo Code](./blog/2022-02-06-tcp-congestion-control.md) 2022-02-06
