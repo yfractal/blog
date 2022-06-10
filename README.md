@@ -1,6 +1,8 @@
 ## Personal Blog
 ## Articles and Slides
 ## 2022
+[Regression Test Selection for Rails Project @ internal sharing](./slides/Regression-Test-Selection-for-Rails-Project.key) 2022-06-09
+
 [Slack’s Incident on 2-22-22 Reading Note](./blog/2022-05-03-slack-incident-reading-note.md) 2022-05-03
 
 [闲来无事，用 Ruby 撸了个 LSM-Tree](https://ruby-china.org/topics/42363) 2022-05-02
