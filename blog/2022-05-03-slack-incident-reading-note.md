@@ -1,32 +1,28 @@
 # Slack’s Incident on 2-22-22 Reading Note
 
-## Why?
+## Why reading incident report is interesting?
 
-We can learn many things from an incident report, such as how to react to the incident, peek at the architecture, and analyze problems in the real case.
+We can learn many things from an incident report, such as how to react to an incident, review architecture, and analyze problems in a real case.
 
-Have to say, it is much more enjoyable to learn from others' incidents. 
+Have to say, it is much more enjoyable to learn from others' incident report.
 
 ## Affect
 
 On February 22, 2022 from 6:00 AM PST to 9:14 AM PST, some customers can't access Slack[2].
 
-## Roughly Timeline
+## Rough Timeline
 
-1. user tickets
-2. alarms received
-3. detected database suffers higher load than usual
+1. received user tickets
+2. received alarms 
+3. detedted database suffers higher load than usual
 4. query timeout, DB overloaded
-5. decrease the requests acceptance rate 
-6. increase the rate => DB overloaded again
-7. decrease the rate => back to normal => increase by smaller increments
+5. detected the requests acceptance rate => DB back to normal
+6. increased the rate => DB overloaded again
+7. decreased the rate => back to normal => increase by small steps
 
 ## The Architecture
 
-Let's go through how the cach works briefly.
-
-### Read
-
-For reading, should be something like:
+The backend server will query the cache first, if the cache missed, query the DB.
 
 ``` 
 v = get(k)
@@ -37,97 +33,91 @@ if v is nil {
 }
 ```
 
-### The cache layer
-
 ![Screen Shot 2022-04-29 at 12 26 31 AM](https://user-images.githubusercontent.com/3775525/165799822-50bc0477-60ce-49ee-98b2-4efd6ae6c91d.png)
 
-Client(app server) requests will be send to mcrouter, then the mcrouter will proxy the requests to memcached servers.
+Clients(app servers) will send requests to the Mcrouter, then the Mcrouter will proxy the requests to Memcached nodes.
 
+Consul is used for discovering Memcached nodes. And mcrib will watch Consul for getting alive Memcached nodes. 
 
-### The Consul + memcached
-The team wanted to upgrade Consul agent and then need to restart a memcached node.
+Then the info will be used by mcrouter for selecting memcached nodes.
 
-> When the agent restart occurs on a memcached node, the node that leaves the service catalog gets replaced by Mcrib [1]
+> When the agent(Consul) restart occurs on a memcached node, the node that leaves the service catalog gets replaced by Mcrib. The new cache node will be empty.
 
-From the above sentence, we can imply the Consul agent and memcached service run in the same node and when they want to upgrade Consul agent, they need to restart memcached. 
+I'm not really understand this sentence.
 
-So the architecture should be:
+It seems that the consul agent will be deployed on some Memcached nodes, and when the Cousul agent restarts, the Memcached node will be replaced by a new empty node.
 
-<img width="410" alt="Screen Shot 2022-04-29 at 12 29 44 AM" src="https://user-images.githubusercontent.com/3775525/165800411-e31f8336-5324-481c-92b8-357225dfadc8.png">
+<img width="684" alt="Screen Shot 2022-07-02 at 22 22 52" src="https://user-images.githubusercontent.com/3775525/177004761-a94c9461-88d5-4426-9201-6122fa07b4c8.png">
 
 ## What happened
 
-### Cache failure causes hit rate decreased
+### Cache failure causes hit rate to decrease
 
-It's the trigger of the incident.
+Upgrade Consul agent => memcached nodes are replaced by empty nodes => cache hit decreased
 
-upgrade Consul agent => need restart memcached node => cache hit decreased
+### Cache failure => DB heavy read load + read amplification => DB overload
 
-### DB heavy load + read amplification => DB overload
-
-Cache reduced a lot of reading throughput for DB. When cache failure happens, DB will suffer heavy load than usual.
+A Cache can reduce a lot of loads for DB. When cache failure happens, DB will suffer much more load than usual.
 
 For Slack, one function/API needs to query many DB shards as it is not sharded well.
 
-=> DB overload
+Those caused the DB to be overloaded.
 
 ### Cascading failure
+Then cascading failure happened.
 
 ![Screen Shot 2022-04-29 at 9 35 05 AM](https://user-images.githubusercontent.com/3775525/165872687-9f9966e7-d2bb-41bc-a095-bae4e874c179.png)
 
+
 ## Thinking in general
 
-After fond out what happens, we can think about this incident in general and then learn from others' experiences.
+Instead of focusing on the incident closely we can make the problem more general and see what we can learn from previous experiences.
 
 ### Cache failure
 
-After we add a cache layer it will have two effects: speed up requests and reduce DB read load[7].
+After we add a cache layer it will have two effects: speed up requests and reduce DB read load[4].
 
 Most applications are read-heavy, for example in Facebook, they have two orders of magnitude more reads than writes[3].
 
 Another fact is cache is much faster say 10 times than DB usually.
 
-So if the cache crashed, DB will suffer a really heavy load most time. So we need to make sure the cache works well in any situation.
+So if the cache crashed, DB will suffer a really heavy load most time. That means we need to take cache failure seriously.
 
-For caching, Facebook published a good paper[3] about how they design their cache system.
+For caching, Facebook has published a paper[3] about how they design their cache system and make it available all the time.
 
 ### High availability
 
 For achieving high availability, we need to ask "what happens if it fails?"[8].
 
-Any failures can stuck(livelock[6]) or crash(cascading failure) the whole system.
+The system may get stuck(livelock[6]) or crash(cascading failure) by any component failure.
 
 We have two options, fix all potential issues or make the system recover fastly.
 
-Options one is infeasible because there are too many possibilities.
+Options one is infeasible because there are too many components and too many potential issues.
 
-But we can achieve fast recovery, that coverts uncertainty problems into certainty problems.
+But we can achieve fast recovery, that coverts unspecific problems into specific ones.
 
-For GFS paper[7], they think "component failures are the norm rather than the exception."
-
-And they handle availability problems through fast recovery and replication.
+For Google GFS[7], they think "component failures are the norm rather than the exception.", and they handle availability problems through fast recovery and replication.
 
 ### Overload control
 
-Most problems are caused by overload and no one can guarantee the system is always under-loaded.
+Most problems are caused by overload and most time the loads are not predictable.
 
 To avoid such problems, we can design some mechanisms to protect our systems.
 
-The most obvious way is the rate limiter, it sets a hard value and when throughput is over the value, the over-part requests will be rejected.
+The most obvious way is rate-limiter, it sets a hard value and if throughput is over the value, the rate-limter will drop the over-part.
 
-One inconvenience of the rate limiter is we need to dynamic change it, we can see this in the incident.
+One inconvenience of the rate-limiter is we need to change it manually, as we can see in this incident.
 
-Microservices have complexity dependency and each part is dynamic changed(software upgrade, hardware config update, or something else), so it's impossible to find a good value for all situations.
+Microservices have complexity dependency whose parts are dynamic changed(software upgrade, hardware config update, or something else), so it's impossible to find a good value for all situations.
 
 Netflix created [concurrency-limits](https://github.com/Netflix/concurrency-limits) based on such observations.
 
-Another thing we need consider is how to provide best user experience we can when we drop users' requests.
+Another thing we need to consider is how to provide the best  experience for users when we start to drop their requests.
 
-Another thing we need to consider is how to provide the best user experience when we drop users' requests.
+"Overload Control for Scaling WeChat Microservices"[5] has a good answer to this question.
 
-"Overload Control for Scaling WeChat Microservices"[5] has a good answer for this problem
-
-In the paper, they drop requests based on features and users. And they use queue time to detect overload instead request delay.
+In the paper, they drop requests based on features and users, and they use queue time to detect overload config the limit value dynamically.
 
 ## References
 1. Slack’s Incident on 2-22-22
@@ -141,6 +131,4 @@ In the paper, they drop requests based on features and users. And they use queue
 5. Hao Zhou. Overload Control for Scaling WeChat Microservices, 2018
 6. J. C. Mogul and K. Ramakrishnan. Eliminating receive livelock in an interrupt-driven kernel. 1997.
 7. Sanjay Ghemawat. The Google File System 2003
-8. MIT 6.824 Spring 2020 Lec 16
-   http://nil.csail.mit.edu/6.824/2020/schedule.html
-9. J Armstrong. A history of Erlang. 2007
+8. J Armstrong. A history of Erlang. 2007
