@@ -14,9 +14,9 @@ On February 22, 2022 from 6:00 AM PST to 9:14 AM PST, some customers can't acces
 
 1. received user tickets
 2. received alarms 
-3. detedted database suffers higher load than usual
+3. detected database suffers higher load than usual
 4. query timeout, DB overloaded
-5. detected the requests acceptance rate => DB back to normal
+5. decreased the requests acceptance rate => DB back to normal
 6. increased the rate => DB overloaded again
 7. decreased the rate => back to normal => increase by small steps
 

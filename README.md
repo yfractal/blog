@@ -2,6 +2,8 @@
 ## Articles and Slides
 ## 2022
 
+[How JeMalloc Works](./blog/2022-10-05-jemalloc.md) 2022-10-05
+
 MIT 6.824 Distributed Systems Reading Notes
   - [Scaling Memcache at Facebook Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1100841630)
   - [The Google File System Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1115903733)
