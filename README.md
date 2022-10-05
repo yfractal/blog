@@ -1,6 +1,15 @@
 ## Personal Blog
 ## Articles and Slides
 ## 2022
+
+MIT 6.824 Distributed Systems Reading Notes
+  - [Scaling Memcache at Facebook Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1100841630)
+  - [The Google File System Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1115903733)
+  - [Amazon Aurora Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1140428705)
+  - [Spark Paper Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1193444846)
+  - [COPS Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1207530839)
+  - [Google Spanner Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1225041302)
+
 [Regression Test Selection for Rails Project @ internal sharing](./slides/Regression-Test-Selection-for-Rails-Project.key) 2022-06-09
 
 [Slack’s Incident on 2-22-22 Reading Note](./blog/2022-05-03-slack-incident-reading-note.md) 2022-05-03
