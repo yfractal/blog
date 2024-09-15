@@ -1,16 +1,32 @@
 ## Personal Blog
 ## Articles and Slides
+## 2024
+[无 root 权限查看 Ruby HTTPS 请求内容](https://ruby-china.org/topics/43886) 2024-09-14
+
+[Detect Ruby GVL contention through dynamic link library functions](https://ruby-china.org/topics/43883) 2024-09-11
+
+[Ruby Garbage Collection 101 and Ruby's RGenGC (Restricted Generational GC)](https://ruby-china.org/topics/43798) 2024-07-06
+
+[Rust2go: calls Go from Rust](https://ruby-china.org/topics/43765) 2024-06-27
+
+[Use eBPF USDT in Rust](https://github.com/yfractal/blog/issues/15) 2024-05-21
+
+## 2023
+[How Meltdown Works](https://github.com/yfractal/blog/issues/14) 2023-12-04
+
+[Exercise Snacks: A Feasible Exercising Strategy for Office Workers](https://github.com/yfractal/blog/issues/12) 2023-05-08
+
 ## 2022
 
 [How JeMalloc Works](./blog/2022-10-05-jemalloc.md) 2022-10-05
 
 MIT 6.824 Distributed Systems Reading Notes
-  - [Scaling Memcache at Facebook Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1100841630)
-  - [The Google File System Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1115903733)
-  - [Amazon Aurora Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1140428705)
-  - [Spark Paper Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1193444846)
-  - [COPS Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1207530839)
-  - [Google Spanner Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1225041302)
+  - [Scaling Memcache at Facebook Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1100841630) 2022-04-17
+  - [The Google File System Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1115903733) 2022-05-03
+  - [Amazon Aurora Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1140428705) 2022-05-29
+  - [COPS Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1207530839) 2022-05-30
+  - [Spark Paper Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1193444846) 2022-06-25
+  - [Google Spanner Reading Note](https://github.com/yfractal/blog/issues/8#issuecomment-1225041302) 2022-08-24
 
 [Regression Test Selection for Rails Project @ internal sharing](./slides/Regression-Test-Selection-for-Rails-Project.key) 2022-06-09
 
