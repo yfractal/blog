@@ -1,6 +1,8 @@
 ## Personal Blog
 ## Articles and Slides
 ## 2024
+[SDB: a New Ruby Stack Profiler @ RubyConf China 2024](./slides/slides/sdb-a-new-ruby-stack-profiler@RubyConf-China-2024.key) 2020-11-30
+
 [无 root 权限查看 Ruby HTTPS 请求内容](https://ruby-china.org/topics/43886) 2024-09-14
 
 [Detect Ruby GVL contention through dynamic link library functions](https://ruby-china.org/topics/43883) 2024-09-11
