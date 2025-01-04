@@ -1,6 +1,8 @@
 ## Personal Blog
 ## Articles and Slides
 ## 2025
+[Understanding Linear Hash Step by Step](./blog/2025-01-04-linear-hash.md) 2025-01-04
+
 [Understanding the Page Table Step by Step](./blog/2025-01-01.md) 2025-01-01
 
 ## 2024
