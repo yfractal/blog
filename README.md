@@ -1,7 +1,7 @@
 ## Personal Blog
 ## Articles and Slides
 ## 2025
-[SDB: a Non-Blocking Ruby Stack Profiler](./blog/2025-01-15-non-blocking-stack-profiler.md) 2025-01-15
+[How SDB Scans the Ruby Stack Without the GVL](./blog/2025-01-15-non-blocking-stack-profiler.md) 2025-01-15
 
 [Understanding Linear Hash Step by Step](./blog/2025-01-04-linear-hash.md) 2025-01-04
 
