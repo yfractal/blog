@@ -1,4 +1,4 @@
-# SDB: a Non-Blocking Ruby Stack Profiler
+# How SDB Scans the Ruby Stack Without the GVL
 
 ## Introduction
 
@@ -43,6 +43,10 @@ Before Ruby reclaims a thread, it calls `Sdb.thread_deleted`, which removes the 
 The data we collected are ISeq addresses, which are not readable to humans.SDB uses eBPF to capture ISeq creation events during compilation or loading (e.g., via bootsnap). Then, we can use an offline program to translate these addresses into human-readable symbols.
 Ruby's memory compaction can move ISeq objects to new addresses. To handle this, we can use eBPF to capture memory compaction events too. This feature is still in progress, as Ruby's memory compaction is not enabled by default and is rarely used in production applications.
 
+SDB’s architecture looks like this:
+<img width="1292" alt="image" src="https://github.com/user-attachments/assets/01850ce7-63cb-4828-b2ce-6825927d4890" />
+
+
 ## Ensuring Fully Correctness
 
 Data races may occur if the Ruby VM updates the stack while SDB is reading it. However, resolving this issue completely is not the primary goal of a stack profiler, as minor inaccuracies do not typically affect its usage in identifying performance bottlenecks.
@@ -53,7 +57,7 @@ To manage this, we can use a generation number for optimistic concurrency contro
 
 ## Summary
 
-This article introduces how SDB scans the Ruby stack without relying on the GVL. By not blocking the application, it enables faster stack scanning and more accurate latency measurements, making a true always-on stack profiler possible.
+This article introduces how SDB scans the Ruby stack without relying on the GVL. By not blocking the application, it enables faster stack scanning and more accurate latency measurements, making a true always-on stack profiler possible. While releasing the GVL resolves the main challenges faced by Ruby stack profilers, it is not sufficient to create a fully non-blocking stack profiler. SDB employs additional concurrency techniques to achieve this, such as spinlocks for synchronizing threads between the Ruby VM and SDB, memory barriers for trace IDs, and a left-right style [7] message queue for its new symbolizer. SDB is still under development, with features such as memory compaction support and detailed evaluations and comparisons based on a Rails application coming soon.
 
 ## References
 
@@ -64,3 +68,4 @@ This article introduces how SDB scans the Ruby stack without relying on the GVL.
 4. https://github.com/rbspy/rbspy
 5. https://github.com/benfred/py-spy
 6. https://github.com/async-profiler/async-profiler
+7. Left-Right: A Concurrency Control Technique with Wait-Free Population Oblivious Reads
