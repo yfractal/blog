@@ -6,9 +6,15 @@ This article is a summary of "Memory Barriers: A Hardware View for Software Hack
 
 CPUs reorder memory references to improve performance. However, in certain situations—such as synchronization primitives—we need memory barriers to ensure correctness.
 
+A highly simplified story is (The "→" represents causation):
+
+*Multiple CPU cores + cache lines → data is replicated across different cache lines → Cache-Coherence Protocols are used to guarantee consistency → these protocols sometimes require blocking CPU execution → asynchronous messaging is introduced but causes state inconsistencies → memory barriers are used to guarantee partial ordering.*
+
 Modern computers have multiple CPU cores, and each core has its own cache. This means a variable(address) might be replicated across different CPU caches. To prevent inconsistencies or data loss for a single variable across multiple caches, cache-coherence protocols are used.
 
-Cache-coherence protocols send messages between caches and main memory, which means it needs to wait for the responses which is slow. For example, when a CPU performs a store operation, it may need to wait for other CPUs' ack responses, which blocks the CPU's execution. To avoid such stalls, the CPU proceeds with a local state update without waiting for responses from other CPUs. This is similar to how changes within a database transaction are only visible to the transaction itself until the transaction is committed. When the CPU receives all necessary responses, the updated state becomes visible to all CPUs. This works well when dealing with a single variable. However, when multiple memory addresses and concurrency across CPUs are involved, issues can arise. Memory barriers are used to solve such issues by providing some kind of ordering guarantees. When a memory barrier is inserted, all memory operations (reads and writes) before it are guaranteed to complete before any memory operations after it begin.
+Cache-coherence protocols rely on message exchanges between caches and main memory. These exchanges introduce latency, as CPUs must wait for acknowledgments, which is extremely slow compared to CPU processing speeds. For example, when a CPU performs a store operation, it might need to wait for acknowledgments from other CPUs, blocking its execution. To mitigate such stalls, CPUs proceed with local state updates without waiting for responses or quickly send acknowledgments without fully applying changes to the cache line. This behavior is similar to how changes within a database transaction remain visible only to that transaction until it is committed. Once the CPU receives all necessary responses, the updated state becomes globally visible to all CPUs.
+
+While this approach works well for single variables, problems arise when multiple memory addresses and concurrent operations across CPUs are involved. **Memory barriers** address these issues by providing ordering guarantees. When a memory barrier is inserted, all memory operations (reads or/and writes) before it are guaranteed to complete before any memory operations after it begin. Using a database analogy, a memory barrier acts like a "commit," ensuring that all prior store and/or load operations are finalized before continuing. This enforces a *happens-before* relationship.
 
 In the following sections, I will introduce the Cache-Coherence Protocols, store buffers and invalidate queues.
 
@@ -128,6 +134,6 @@ The solution is to add an additional memory barrier between lines 8 and 9. The u
 9   smp_mb();
 10. assert(a == 1);
 11. }
-
+```
 
 Now, after CPU 1 finishes line 8(`while (b == 0) continue`) and executes line 9(`smp_mb()`), the memory barrier ensures that CPU 1 must stall until it processes all preexisting messages in its invalidation queue. Therefore, by the time CPU 1 reaches line 10, `a = 1` has already been applied, and the assertion succeeds as expected.
