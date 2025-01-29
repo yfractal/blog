@@ -91,16 +91,21 @@ In this case, when CPU 0 executes line 3 (`smp_mb()`), it marks all current stor
 
 ## Invalidate Queues
 ### Why We Need Invalidate Queues
-- When the store buffer is full, it blocks the CPU from executing further instructions.
 - When a cache line is busy, the CPU might fall behind in processing "invalidate" messages.
-- Then a new queue is added to each CPU to address the speed discrepancy.
-   When an "invalidate" message arrives at the queue, the CPU can immediately acknowledge it.
+- Then the store buffer could be full and it stalls the CPU's execution.
+- To address the speed discrepancy, a new queue is added to each CPU.
+  When an "invalidate" message arrives at the queue, the CPU can immediately acknowledge it.
 - The CPU ensures that, when placing an entry into the invalidate queue, it processes the entry before transmitting any protocol messages related to that cache line.
+
+Now the CPU looks like this:
+
+<img src="../images/memory-barrier-invalid-queue.png" alt="memory-barrier" width="500">
 
 ### Invalidate Queues and Memory Barriers
 
-As the queue introduces additional inconsistency, our earlier example can fail. Let’s examine how this happens:
+After the new queue has been added, it introduces additional inconsistency. As the state has been applied to the store buffer, not the cache line, the CPU can see "outdated" data.
 
+And this inconsistency causes our example to fail again. Let’s examine how this happens:
 
 ```c
 1. void foo(void) {
@@ -114,6 +119,7 @@ As the queue introduces additional inconsistency, our earlier example can fail. 
 9.  assert(a == 1);
 10. }
 ```
+
 
 Suppose `a` is in the "shared" state and resides in the caches of both CPU 0 and CPU 1. Meanwhile, `b` is owned by CPU 0.
 
