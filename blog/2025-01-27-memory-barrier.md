@@ -30,27 +30,36 @@ While there are more details in the paper, the basic idea is the same: when a CP
 
 ## Store Buffers
 
-Cache-coherence protocols ensure consistency but can be slow, as a CPU must wait for responses from all other CPUs when writing to a shared cache line. To avoid such blocking, hardware designers introduced store buffers, which allow writes to be performed asynchronously.
+### Why We Need Store Buffers
 
+1. Cache-coherence protocols ensure consistency but can be slow.
+   For example, a CPU must wait for responses from all other CPUs when writing to a shared cache line.
+2. Store buffers are added to avoid blocking.
+   The CPU can record its write operation in the buffer and continue executing other instructions.
+3. The data is removed from the store buffer after the CPU receives all necessary acknowledgments.
 
-With store buffers, a CPU can record its write operation in the buffer and continue executing other instructions. Once the CPU receives all necessary acknowledgments, the data is removed from the store buffer and applied to the cache.
+Now the CPU becomes:
 
-For a CPU, as it writes data to the store buffer, so it needs to read from the store buffer(not directly from the cache).
+<img src="../images/memory-barrier-store-buffer.png" alt="memory-barrier" width="500">
+
+### Store Forwarding
+
+As a CPU writes data to both the cache line and store buffer, for reading its own update, it needs to read from the store buffer (not directly from the cache).
 
 
 For example, the following code is executed by a single CPU:
-
 
 ```c
 1 a = 1
 2 b = a + 1
 ```
 
-At line 1, the value 1 is stored in the store buffer. At line 2, the CPU must read a. If it reads `a` from the cache directly, it would see the old value (0) because the new value hasn't been applied to the cache yet. To avoid this inconsistency, the CPU reads `a` from the store buffer, which has the updated value. This guarantee is called self-consistency, and the mechanism is referred to as store forwarding.
+At line 1(`a = 1`), the value 1 is stored in the store buffer. At line 2(`b= a + 1`), the CPU may need to read a. If it reads `a` from the cache directly, it would see the old value (0) because the new value hasn't been applied to the cache yet. To avoid this inconsistency, the CPU reads `a` from the store buffer, which has the updated value. This guarantee is called self-consistency, and the mechanism is referred to as store forwarding.
 
+
+### Store Buffers and Memory Barriers
 
 The next issue arises from the interaction of multiple variables and multiple CPUs.
-
 
 ```c
 1. void foo(void) {
