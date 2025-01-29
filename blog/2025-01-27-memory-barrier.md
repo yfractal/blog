@@ -154,3 +154,11 @@ The solution is to add an additional memory barrier between lines 8 and 9. The u
 ```
 
 Now, after CPU 1 finishes line 8(`while (b == 0) continue`) and executes line 9(`smp_mb()`), the memory barrier ensures that CPU 1 must stall until it processes all preexisting messages in its invalidation queue. Therefore, by the time CPU 1 reaches line 10, `a = 1` has already been applied, and the assertion succeeds as expected.
+
+## Summary
+
+This article explains the basic concepts from "Memory Barriers: A Hardware View for Software Hackers," focusing on the problems and solutions in memory consistency for systems with multiple CPU cores and caches.
+
+Multiple CPU cores and cache lines are introduced to improve parallel performance. Then, cache-coherence protocols are used to guarantee correctness. However, as these protocols are slow in certain situations, new buffers/queues are added. Finally, memory barriers are used to provide ordering. It is similar to a database transaction, with internal state, order, and the point of visibility for other CPU cores.
+
+It doesn't cover many details, such as the specifics of the cache-coherence protocols, but I believe that to understand a concept, it's important to grasp the big picture—what the problem is and how it is solved.
