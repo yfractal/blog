@@ -20,6 +20,9 @@ In the following sections, I will introduce the Cache-Coherence Protocols, store
 
 ## Cache-Coherence Protocols
 
+<img src="../images/memory-barrier-0.png" alt="memory-barrier" width="500">
+
+
 When data is replicated to different CPU caches, cache-coherence protocols are required to ensure consistency.
 
 Basically, a CPU can update a cache line only when it has exclusive ownership of that cache line. For example, if a cache line is in a "shared" state (i.e., multiple caches have replicas of the same address), the CPU must send an "invalidate" message to all other CPUs before modifying the cache line. Upon receiving this message, the other CPUs remove the corresponding data from their caches and respond. Once the CPU that initiated the invalidation receives all the responses, it gains exclusive ownership of the cache line and can modify it. This process is described in Transition (h) and Transition (b) of the paper.
