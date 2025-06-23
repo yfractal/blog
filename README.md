@@ -1,6 +1,8 @@
 ## Personal Blog
 ## Articles and Slides
 ## 2025
+[LightRAG 论文笔记](blog/2025-06-23-lighrag-summary.md) 2025-06-23
+
 [Understanding Memory Barriers Step by Step - A Summary of "Memory Barriers: A Hardware View for Software Hackers"](./blog/2025-01-27-memory-barrier.md) 2025-01-29
 
 [Understanding Linear Hash Step by Step](./blog/2025-01-04-linear-hash.md) 2025-01-04
