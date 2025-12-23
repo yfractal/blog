@@ -1,6 +1,8 @@
 ## Personal Blog
-## Articles and Slides
+
 ## 2025
+[Recurrent Neural Network (RNN) Introduction](blog/2025-12-23-rnn-introduction.md) 2025-12-23
+
 [《学习之道》阅读笔记](blog/2025-11-05-the-art-of-learning-note.md) 2025-11-05
 
 [The Tenacious Brain 阅读笔记](blog/2025-10-24-the-tenacious-brain.md) 2025-10-24
