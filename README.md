@@ -1,6 +1,8 @@
 ## Personal Blog
 ## Articles and Slides
 ## 2025
+[The Tenacious Brain 阅读笔记](blog/2025-10-24-the-tenacious-brain.md) 2025-10-24
+
 [LightRAG 论文笔记](blog/2025-06-23-lighrag-summary.md) 2025-06-23
 
 [Understanding Memory Barriers Step by Step - A Summary of "Memory Barriers: A Hardware View for Software Hackers"](./blog/2025-01-27-memory-barrier.md) 2025-01-29
