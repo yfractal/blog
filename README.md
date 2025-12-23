@@ -1,6 +1,8 @@
 ## Personal Blog
 ## Articles and Slides
 ## 2025
+[《学习之道》阅读笔记](blog/2025-11-05-the-art-of-learning-note.md) 2025-11-05
+
 [The Tenacious Brain 阅读笔记](blog/2025-10-24-the-tenacious-brain.md) 2025-10-24
 
 [LightRAG 论文笔记](blog/2025-06-23-lighrag-summary.md) 2025-06-23
